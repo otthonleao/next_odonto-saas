@@ -11,11 +11,16 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
+import { LogIn, Menu } from "lucide-react";
 
 export function Header() {
 
 	const [isOpen, setIsOpen] = React.useState(false);
+
+	// Simulando uma sessão de usuário lodado.
+	// true = usuário logado
+	// false = usuário não logado
+	const session = false;
 
 	const navItems = [
 		{ href: "/", label: "Home" },
@@ -35,9 +40,22 @@ export function Header() {
 					className="bg-transparent hover:bg-transparent text-black shadow-none"
 					onClick={() => setIsOpen(false)}
 				>
-					<Link href={item.href}>{item.label}</Link>
+					<Link href={item.href} className="text-base">{item.label}</Link>
 				</Button>
 			))}
+
+			{/*
+			Renderiza o link de acesso à clínica se o usuário estiver logado
+			Caso contrário, renderiza o botão de acesso à clínica */}
+			{session ? (
+				<Link href="/dashboard" className="flex items-center justify-center gap-2">
+					Acessar Clínica
+				</Link>
+			) : (
+				<Button className="flex items-center justify-center gap-2 ml-4 mr-4">
+					<LogIn />Fazer Login
+				</Button>
+			)}
 		</>
 	)
 
