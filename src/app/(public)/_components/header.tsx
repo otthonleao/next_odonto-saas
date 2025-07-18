@@ -11,6 +11,26 @@ import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 
 export function Header() {
+
+	const navItems = [
+		{ href: "/", label: "Home" },
+		{ href: "/profissionais", label: "Profissionais" },
+		{ href: "/pacientes", label: "Pacientes" },
+		{ href: "/consultas", label: "Consultas" },
+		{ href: "/dashboard", label: "Dashboard" },
+
+	];
+
+	const RenderNavLinks = () => (
+		<>
+			{navItems.map((item) => (
+				<Button key={item.href} asChild className="flex bg-transparent hover:bg-transparent text-black shadow-none">
+					<Link href={item.href}>{item.label}</Link>
+				</Button>
+			))}
+		</>
+	)
+
 	return (
 		<header className="fixed top-0 right-0 left-0 z-[999] py-4 px-6 bg-amber-50">
 
@@ -19,11 +39,12 @@ export function Header() {
 					Odonto<span className="text-blue-800">SaaS</span>
 				</Link>
 
+				{/* Oculta o menu em telas pequenas */}
 				<nav className="hidden md:flex items-center">
-					<Link href="/" className="text-lg">Home</Link>
-					<Link href="/dashboard" className="text-lg">Dashboard</Link>
+					<RenderNavLinks />
 				</nav>
-
+				
+				{/* Menu lateral para telas pequenas */}
 				<Sheet>
 					<SheetTrigger asChild className="md:hidden">
 						<Button className="text-black hover:bg-transparent" variant="ghost" size="icon">
@@ -37,8 +58,7 @@ export function Header() {
 							<SheetDescription>Sistema Odontológico</SheetDescription>
 						</SheetHeader>
 						<nav>
-							<Link href="/" className="text-lg">Home</Link>
-							<Link href="/dashboard" className="text-lg">Dashboard</Link>
+							<RenderNavLinks />
 						</nav>
 					</SheetContent>
 				</Sheet>
