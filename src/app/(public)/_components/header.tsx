@@ -32,7 +32,7 @@ export function Header() {
 				<Button
 					key={item.href}
 					asChild
-					className="flex bg-transparent hover:bg-transparent text-black shadow-none"
+					className="bg-transparent hover:bg-transparent text-black shadow-none"
 					onClick={() => setIsOpen(false)}
 				>
 					<Link href={item.href}>{item.label}</Link>
@@ -50,7 +50,7 @@ export function Header() {
 				</Link>
 
 				{/* Oculta o menu em telas pequenas */}
-				<nav className="hidden md:flex items-center">
+				<nav className="hidden md:flex items-center space-x-4">
 					<RenderNavLinks />
 				</nav>
 
@@ -67,7 +67,7 @@ export function Header() {
 							<SheetTitle>Menu</SheetTitle>
 							<SheetDescription>Sistema Odontológico</SheetDescription>
 						</SheetHeader>
-						<nav>
+						<nav className="flex flex-col space-y-4 mt-6">
 							<RenderNavLinks />
 						</nav>
 					</SheetContent>
