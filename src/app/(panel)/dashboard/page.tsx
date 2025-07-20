@@ -1,7 +1,9 @@
 export default function Dashboard() {
   return (
     <div>
-      <h1>Dashboard</h1>
+      <h1>Dashboard Page</h1>
+			<div className="w-full h-[600px] bg-gray-200 mb-10"></div>
+			<div className="w-full h-[600px] bg-gray-300 mb-10"></div>
     </div>
   );
 }
