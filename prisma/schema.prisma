@@ -50,8 +50,23 @@ model User {
   email         String?   @unique
   emailVerified DateTime? @map("email_verified")
   image         String?
+	address      				String?		@default("")
+	phone         			String?   @unique
+	status        			Boolean 	@default(true)
+	timezone			 			String?   @default("America/Sao_Paulo")
+	stripe_customer_id 	String?
+
+	subscription				Subscription? // Relacionamento onde 1 user pode ter 1 subscription
+	services      			Service[] // Relacionamento onde 1 user pode ter vários serviços atrelado a ele
+	remiders			 			Reminder[] // Relacionamento onde 1 user pode ter vários lembretes atrelado a ele
+	appointments  			Appointment[] // Relacionamento onde 1 user pode ter vários agendamentos atrelado a ele
+
+  password      String?
   accounts      Account[]
   sessions      Session[]
+
+	createdAt  		DateTime   @default(now())
+  updatedAt  		DateTime   @updatedAt
 
   @@map("users")
 }
@@ -63,4 +78,67 @@ model VerificationToken {
 
   @@unique([identifier, token])
   @@map("verification_tokens")
+}
+
+enum Plan {
+  BASIC
+  PROFESSIONAL
+}
+
+model Appointment {
+	id          String   @id @default(uuid())
+	name				String // Nome do paciente
+	email       String? // Email do paciente
+	phone       String? // Telefone do paciente
+	appointmentDate DateTime // Data e hora do agendamento
+	time				String // Horário do agendamento
+
+	serviceId   String // ID do serviço relacionado
+	service     Service @relation(fields: [serviceId], references: [id]) // Um agendamento sempre está associado a um serviço
+
+	userId      String // ID do usuário que criou o agendamento
+	user        User    @relation(fields: [userId], references: [id]) // Um
+
+	createdAt   DateTime @default(now())
+	updatedAt   DateTime @updatedAt
+}
+
+model Reminder {
+	id          String   @id @default(uuid())
+	description String?
+
+	// Relacionando um lembrete a um usuário
+	userId      String
+	user        User     @relation(fields: [userId], references: [id]) // Um Lembrete sempre está associado a um usuário
+	createdAt   DateTime @default(now())
+	updatedAt   DateTime @updatedAt
+}
+
+model Service {
+	id          String   @id @default(uuid())
+	name        String
+	price       Int
+	duration    Int      // Duração em minutos
+	status      Boolean  @default(true) // Indica se o serviço está ativo ou não
+
+	// Relacionando uma ordem de serviço a um usuário
+	userId      String
+	user        User     @relation(fields: [userId], references: [id]) // Um Serviço sempre está associado a um usuário
+	appointments Appointment[] // Relacionamento onde 1 serviço pode ter vários agendamentos atrelado a ele
+
+	createdAt   DateTime @default(now())
+	updatedAt   DateTime @updatedAt
+}
+
+model Subscription {
+  id          String   @id @default(uuid())
+	status      String
+	plan       	Plan
+	priceId   	String
+
+	createdAt   DateTime @default(now())
+	updatedAt   DateTime @updatedAt
+
+	userId      String   @unique
+	user        User     @relation(fields: [userId], references: [id]) // Um Plano sempre está associado a um usuário
 }
