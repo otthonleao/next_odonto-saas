@@ -55,6 +55,7 @@ model User {
 	status        			Boolean 	@default(true)
 	timezone			 			String?   @default("America/Sao_Paulo")
 	stripe_customer_id 	String?
+	times								String[] 	@default([]) // Array de horários disponíveis para agendamento
 
 	subscription				Subscription? // Relacionamento onde 1 user pode ter 1 subscription
 	services      			Service[] // Relacionamento onde 1 user pode ter vários serviços atrelado a ele
