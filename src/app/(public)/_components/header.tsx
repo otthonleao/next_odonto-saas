@@ -12,24 +12,30 @@ import {
 } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button";
 import { LogIn, Menu } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { handleRegister } from "../_actions/login";
 
 export function Header() {
 
+	const { data: session, status } = useSession();
 	const [isOpen, setIsOpen] = React.useState(false);
 
-	// Simulando uma sessão de usuário lodado.
-	// true = usuário logado
-	// false = usuário não logado
-	const session = false;
+	// console.log('Session: ', session);
+	// console.log('Status: ', status);
 
 	const navItems = [
 		{ href: "/", label: "Home" },
 		{ href: "/profissionais", label: "Profissionais" },
 		{ href: "/pacientes", label: "Pacientes" },
 		{ href: "/consultas", label: "Consultas" },
-		{ href: "/dashboard", label: "Dashboard" },
-
 	];
+
+	// Chama a função handleRegister para iniciar o processo de login
+	// Passa o provider como parâmetro para indicar qual provedor de autenticação será usado
+	// Redireciona o usuário para a página de dashboard após o login bem sucedido
+	async function handleLogin() {
+		await handleRegister('github');
+	}
 
 	const RenderNavLinks = () => (
 		<>
@@ -47,12 +53,12 @@ export function Header() {
 			{/*
 			Renderiza o link de acesso à clínica se o usuário estiver logado
 			Caso contrário, renderiza o botão de acesso à clínica */}
-			{session ? (
-				<Link href="/dashboard" className="flex items-center justify-center gap-2">
-					Acessar Clínica
+			{ status === 'loading' ? ( <></> ) : session ? (
+				<Link href="/dashboard" className="flex items-center justify-center gap-2 bg-zinc-900 hover:bg-zinc-800 active:scale-95 text-white py-1 px-4 rounded-md ">
+					Acessar Dashboard
 				</Link>
 			) : (
-				<Button className="flex items-center justify-center gap-2 ml-4 mr-4">
+				<Button onClick={handleLogin} className="flex items-center justify-center gap-2 ml-4 mr-4">
 					<LogIn />Fazer Login
 				</Button>
 			)}
