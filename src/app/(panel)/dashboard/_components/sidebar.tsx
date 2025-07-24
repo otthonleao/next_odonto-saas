@@ -30,7 +30,12 @@ export function SidebarDashboard({ children }: { children: ReactNode }) {
           <Sheet>
             <div className='flex items-center gap-4'>
               <SheetTrigger asChild>
-                <Button variant="outline" size="icon" className='md:hidden'>
+                <Button
+									variant="outline"
+									size="icon"
+									className='md:hidden'
+									onClick={() => setIsCollapsed(false)} // Quando clicar no hamburguer, colapsa o sidebar setando falso para reexibir os nomes do menu, pois se ficar true é exbido apenas o icone no mobile pois o isCollapsed era true
+								>
                   <List className='w-5 h-5' />
                 </Button>
               </SheetTrigger>
